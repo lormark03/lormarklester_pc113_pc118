@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('address');
             $table->integer('age');
-            $table->string('email_address');
+            $table->string('email_address')->unique();
             $table->string('phone_number');
             $table->string('emergency_contact');
             $table->timestamps();
