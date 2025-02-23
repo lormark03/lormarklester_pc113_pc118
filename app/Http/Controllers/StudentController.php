@@ -25,4 +25,64 @@ class StudentController extends Controller
 
         return response()->json($students);
     }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'address' => 'required|string',
+            'age' => 'required|integer', 
+            'email_address' => 'required|email|unique:employees,email_address',
+            'phone_number' => 'required|string',
+            'emergency_contact' => 'required|string',
+        ]);
+    
+        $student = student::create($validatedData);
+    
+        return response()->json([
+            'message' => 'student created successfully',
+            'student' => $student,
+        ], 201);
+    }
+
+    public function update(Request $request, $id)
+{
+    $student = student::find($id);
+
+    if (!$student) {
+        return response()->json(['message' => 'student not found'], 404);
+    }
+
+    $validatedData = $request->validate([
+        'first_name' => 'sometimes|string',
+        'last_name' => 'sometimes|string',
+        'email_address' => 'sometimes|email|unique:employees,email_address,' . $id,
+        'address' => 'sometimes|string',
+        'age' => 'sometimes|integer',
+        'phone_number' => 'sometimes|string',
+        'emergency_contact' => 'sometimes|string',
+    ]);
+
+    $student->update($validatedData);
+
+    return response()->json([
+        'student' => $student,
+    ], 200);
+}
+
+public function destroy($id)
+{
+    $student = student::find($id);
+
+    if (!$student) {
+        return response()->json(['message' => 'student not found'], 404);
+    }
+
+    $student->delete();
+
+    return response()->json([
+        'message' => 'student deleted']);
+}
+
 }
