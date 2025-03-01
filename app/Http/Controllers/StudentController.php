@@ -84,5 +84,5 @@ public function destroy($id)
     return response()->json([
         'message' => 'student deleted']);
 }
-
+  
 }
