@@ -24,8 +24,6 @@ class AuthController extends Controller
         }
 
         $token = Str::random(100);
-        // $user->api_token = hash('sha256', $token);
-        // $user->save();
          $user->update(['api_token' => $token]);
 
         return response()->json([
