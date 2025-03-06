@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class AuthController extends Controller
 {
     public function login(Request $request){
         $request->validate([
-            'email' => 'requred|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
