@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserdashboardController;
+use App\Http\Controllers\UserDashboardController;
 
 Route::get('/employees', [EmployeeController::class, 'index']);
 Route::get('/students', [StudentController::class, 'index']);
@@ -22,9 +22,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 
+
 //middleware
-Route::middleware(['auth:sanctum', 'role:0'])->get('/users', [AuthController::class, 'index']);
-Route::middleware(['auth:sanctum', 'role:1'])->get('/udashboard', [UserdashboardController::class, 'index']);
+Route::middleware(['auth:sanctum', 'role:0'])->get('/users', [AuthController::class, 'login']);
+Route::middleware(['auth:sanctum', 'role:1'])->get('/userdashboard', [UserDashboardController::class, 'index']);
 
 
 Route::get('unknown', function () {
