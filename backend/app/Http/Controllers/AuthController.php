@@ -24,7 +24,7 @@ class AuthController extends Controller
             ], 404);
         }
 
-        $token = Str::random(100);
+        $token = Str::random(20);
          $user->update(['api_token' => $token]);
 
         return response()->json([

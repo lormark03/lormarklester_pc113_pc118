@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;    
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Exception;
 
 class UserDashboardController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         return response()->json([
-            'message' => 'Welcome to the dashboard',
+            'message' => 'This is user dashboard',
             'user' => Auth::user(),
-        ]);
+        ]); 
     }
 }

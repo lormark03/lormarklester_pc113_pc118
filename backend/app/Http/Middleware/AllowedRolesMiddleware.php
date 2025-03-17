@@ -17,7 +17,7 @@ class AllowedRolesMiddleware
     {
       
         $user = $request->user();
-        if ($user->role == 0) {
+        if ($user->role == 'admin') {
           return $next($request);
         }
         if (!in_array($user->role, $roles)) {
