@@ -6,8 +6,9 @@
     <title>Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
@@ -15,6 +16,8 @@
             display: flex;
             height: 100vh;
         }
+
+        /* Sidebar styling */
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -50,6 +53,7 @@
             background-color: #495057;
         }
 
+        /* Main content */
         .content {
             margin-left: 250px;
             padding: 20px;
@@ -58,7 +62,7 @@
             transition: all 0.3s;
         }
 
-
+        /* Sidebar toggle button */
         .sidebar-toggle {
             display: none;
             position: absolute;
@@ -73,6 +77,7 @@
             z-index: 10;
         }
 
+        /* Responsive sidebar */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -95,11 +100,11 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar" id="sidebar">
     <div class="logo">📊 Dashboard</div>
     <a href="dashboard.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg><i class="fas fa-home"></i> Home</a>
+
 
     <div class="dropdown">
     <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-between" data-bs-toggle="collapse" data-bs-target="#userDropdown" style="padding: 12px 20px;">
@@ -115,18 +120,72 @@
     </div>
     <i class="fas fa-chevron-down"></i> 
 </a>
-
         <div class="collapse" id="userDropdown">
-            <a href="User-List.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg> User List</a>
+        <a href="User-List.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg> User List</a>
             <a href="Students-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg> Student List</a>
             <a href="Employee-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9z" /><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" /></svg> Employee List</a>
         </div>
     </div>
 
+   
     <a href="logout.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Main Content -->
     <div class="content">
-        <h2>Welcome to the Dashboard</h2>
+        <h2>Student List</h2>
+
+        <table class="table">
+  <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Address</th>
+        <th scope="col">Age</th>
+        <th scope="col">Email Address   </th> 
+        <th scope="col">Phone</th>
+        <th scope="col">Emergency Contact</th>
+        <th scope="col">Action</th>
+    </tr>
+  </thead>
+    <tbody>
+    </tbody>
+</table>
+
+</body>
+<script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        fetchStudents();
+
+        function fetchStudents() {
+            $.ajax({
+                url: 'http://localhost:8000/api/students', // Update with your API URL
+                method: 'GET',
+                success: function (data) {
+                    let tableBody = '';
+                    data.forEach(student => {
+                        tableBody += `
+                            <tr>
+                                <td>${student.id}</td>
+                                <td>${student.first_name}</td>
+                                <td>${student.last_name}</td>
+                                <td>${student.address}</td>
+                                <td>${student.age}</td>
+                                <td>${student.email_address}</td>
+                                <td>${student.phone_number}</td>
+                                <td>${student.emergency_contact}</td>
+                            </tr>
+                        `;
+                    });
+                    $('.table tbody').html(tableBody);
+                },
+                error: function (error) {
+                    console.error('Error fetching students:', error);
+                }
+            });
+        }
+    });
+</script>
 </html>
