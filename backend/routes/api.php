@@ -18,6 +18,7 @@ Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
 Route::delete('/students/{id}', [StudentController::class, 'destroy']);
 Route::get('/employees/search', [EmployeeController::class, 'search']); 
 Route::get('/students/search', [StudentController::class, 'search']);
+Route::get('/users', [UserController::class, 'index']);
 Route::post('/login', [UserController::class, 'login']);
 
 
