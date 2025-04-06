@@ -6,9 +6,7 @@
     <title>Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
@@ -16,8 +14,6 @@
             display: flex;
             height: 100vh;
         }
-
-        /* Sidebar styling */
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -77,7 +73,6 @@
             z-index: 10;
         }
 
-        /* Responsive sidebar */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -122,7 +117,6 @@
 </a>
         <div class="collapse" id="userDropdown">
         <a href="User-List.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg> User List</a>
-            <a href="Students-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg> Student List</a>
             <a href="Employee-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9z" /><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" /></svg> Employee List</a>
         </div>
     </div>
@@ -144,8 +138,7 @@
         <th scope="col">Address</th>
         <th scope="col">Age</th>
         <th scope="col">Email Address   </th> 
-        <th scope="col">Phone</th>
-        <th scope="col">Emergency Contact</th>
+        <th scope="col">Phone Number</th>
         <th scope="col">Action</th>
     </tr>
   </thead>
@@ -161,7 +154,7 @@
 
         function fetchStudents() {
             $.ajax({
-                url: 'http://localhost:8000/api/students', // Update with your API URL
+                url: 'http://localhost:8000/api/students',
                 method: 'GET',
                 success: function (data) {
                     let tableBody = '';
@@ -175,7 +168,10 @@
                                 <td>${student.age}</td>
                                 <td>${student.email_address}</td>
                                 <td>${student.phone_number}</td>
-                                <td>${student.emergency_contact}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit-student" data-id="${student.id}" data-firstname="${student.first_name}" data-lastname="${student.last_name}" data-address="${student.address}" data-age="${student.age}" data-email="${student.email_address}" data-phone="${student.phone_number}">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-student" data-id="${student.id}">Delete</button>
+                                </td>
                             </tr>
                         `;
                     });
@@ -186,6 +182,65 @@
                 }
             });
         }
+
+        $(document).on('click', '.edit-student', function () {
+            let studentId = $(this).data('id');
+            $('#editStudentId').val(studentId);
+            $('#editFirstName').val($(this).data('firstname'));
+            $('#editLastName').val($(this).data('lastname'));
+            $('#editAddress').val($(this).data('address'));
+            $('#editAge').val($(this).data('age'));
+            $('#editEmail').val($(this).data('email'));
+            $('#editPhone').val($(this).data('phone'));
+            $('#editStudentModal').modal('show');
+        });
+
+        // Update 
+        $('#editStudentForm').submit(function (event) {
+            event.preventDefault();
+            let studentId = $('#editStudentId').val();
+            let updatedData = {
+                first_name: $('#editFirstName').val(),
+                last_name: $('#editLastName').val(),
+                address: $('#editAddress').val(),
+                age: $('#editAge').val(),
+                email_address: $('#editEmail').val(),
+                phone_number: $('#editPhone').val()
+            };
+
+            $.ajax({
+                url: `http://localhost:8000/api/students/${studentId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function () {
+                    alert('Student updated successfully!');
+                    $('#editStudentModal').modal('hide');
+                    fetchStudents();
+                },
+                error: function (error) {
+                    console.error('Error updating student:', error);
+                }
+            });
+        });
+
+        // Delete 
+        $(document).on('click', '.delete-student', function () {
+            let studentId = $(this).data('id');
+            if (confirm('Are you sure you want to delete this student?')) {
+                $.ajax({
+                    url: `http://localhost:8000/api/students/${studentId}`,
+                    method: 'DELETE',
+                    success: function () {
+                        alert('Student deleted successfully!');
+                        fetchStudents();
+                    },
+                    error: function (error) {
+                        console.error('Error deleting student:', error);
+                    }
+                });
+            }
+        });
     });
 </script>
 </html>

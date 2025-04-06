@@ -8,9 +8,15 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+
+   public function employee(){
+      return response()->json(Employee::all());
+    }
+
     public function index(Request $request)
     {
         $query = Employee::query();
+
 
         if ($request->has('search')) {
             $search = $request->input('search');

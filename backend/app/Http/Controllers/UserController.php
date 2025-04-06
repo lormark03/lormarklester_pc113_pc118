@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 class UserController extends Controller
 {
+
     public function index()
     {
     try {
@@ -44,4 +45,67 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:employees,email_address',
+            'role' => 'required|string',
+            'password' => 'required|string|min:8',
+        ]);
+    
+        $user = user::create($validatedData);
+    
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+        ], 201);
+    }
+
+    public function update(Request $request, $id)
+{
+    $user = user::find($id);
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    $validatedData = $request->validate([
+        'name' => 'sometimes|string',
+        'email' => 'sometimes|email|unique:employees,email_address,' . $id,
+        'role' => 'sometimes|string',
+    ]);
+
+    $user->update($validatedData);
+
+    return response()->json([
+        'user' => $user,
+    ], 200);
 }
+
+public function destroy($id)
+{
+    $user = user::find($id);
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404); 
+    }
+
+    $user->delete();
+
+    return response()->json([
+        'message' => 'User deleted']);
+}
+
+
+public function hello(){
+    return response()->json([
+        'message'=>'Hello Word'
+    ]);
+}
+  
+}
+
+
+

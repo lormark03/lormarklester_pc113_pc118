@@ -142,9 +142,8 @@
         <th scope="col">Lastname</th>
         <th scope="col">Address</th>
         <th scope="col">Age</th>
-        <th scope="col">Email Address   </th> 
+        <th scope="col">Email Address</th> 
         <th scope="col">Phone</th>
-        <th scope="col">Emergency Contact</th>
         <th scope="col">Action</th>
     </tr>
   </thead>
@@ -174,7 +173,6 @@
                                 <td>${employee.age}</td>
                                 <td>${employee.email_address}</td>
                                 <td>${employee.phone_number}</td>
-                                <td>${employee.emergency_contact}</td>
                             </tr>
                         `;
                     });

@@ -10,6 +10,7 @@ class AllowedRolesMiddleware
 {
     /**
      * Handle an incoming request.
+     * ;IUY9E5657T7PHIG,K786
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

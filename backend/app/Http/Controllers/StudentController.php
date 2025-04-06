@@ -6,21 +6,25 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
-{
-    public function index(Request $request)
+{   
+   public function student(){
+     return response()->json(Student::all());
+    }
+
+    public function index(Request $request) 
     {
-        $query = Student::query();
+        $query = Student::query(); 
 
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('first_name', 'LIKE', "%{$search}%")
-                  ->orWhere('last_name', 'LIKE', "%{$search}%")
-                  ->orWhere('email_address', 'LIKE', "%{$search}%")
-                  ->orWhere('address', 'LIKE', "%{$search}%")
-                  ->orWhere('age', 'LIKE', "%{$search}%")
-                  ->orWhere('phone_number', 'LIKE', "%{$search}%");
+        if ($request->has('search')) { 
+            $search = $request->input('search'); 
+            $query->where('first_name', 'LIKE', "%{$search}%") 
+                  ->orWhere('last_name', 'LIKE', "%{$search}%") 
+                  ->orWhere('email_address', 'LIKE', "%{$search}%") 
+                  ->orWhere('address', 'LIKE', "%{$search}%") 
+                  ->orWhere('age', 'LIKE', "%{$search}%") 
+                  ->orWhere('phone_number', 'LIKE', "%{$search}%"); 
         }
-
+        
         $students = $query->get();
 
         return response()->json($students);
@@ -31,11 +35,11 @@ class StudentController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'required|string',     
             'age' => 'required|integer', 
             'email_address' => 'required|email|unique:employees,email_address',
             'phone_number' => 'required|string',
-            'emergency_contact' => 'required|string',
+            'emergency_contact' => 'nullable|string',
         ]);
     
         $student = student::create($validatedData);
@@ -76,7 +80,7 @@ public function destroy($id)
     $student = student::find($id);
 
     if (!$student) {
-        return response()->json(['message' => 'student not found'], 404);
+        return response()->json(['message' => 'student not found'], 404); 
     }
 
     $student->delete();

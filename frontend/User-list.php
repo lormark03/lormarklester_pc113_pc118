@@ -121,9 +121,9 @@
     <i class="fas fa-chevron-down"></i> 
 </a>
         <div class="collapse" id="userDropdown">
-            <a href="Students-list.php" class="dropdown-item">Student List</a>
-            <a href="Employee-list.php" class="dropdown-item">Employee List</a>
-        </div>
+            <a href="Students-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>  Student List</a>
+            <a href="Employee-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9z" /><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" /></svg> Employee List</a>
+            </div>
     </div>
 
    
@@ -132,7 +132,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <div class="content">
-        <h2>Users</h2>
+        <h2>User List</h2>
 
         <table class="table">
   <thead>
@@ -149,17 +149,54 @@
     </tbody>
 </table>
 
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId">
+                    <div class="mb-3">
+                        <label for="editUserName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editUserName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editUserEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserRole" class="form-label">Role</label>
+                        <select class="form-control" id="editUserRole">
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-<script>
 
+<script>
     $(document).ready(function () {
         fetchUsers();
 
+
         function fetchUsers() {
             $.ajax({
-                url: 'http://localhost:8000/api/users', // Update with your API URL
+                url: 'http://localhost:8000/api/users',
                 method: 'GET',
+                cache: false, // Prevents caching issues
+                headers: { "Cache-Control": "no-cache" },
+                dataType: 'json',
                 success: function (data) {
                     let tableBody = '';
                     data.forEach(user => {
@@ -169,16 +206,102 @@
                                 <td>${user.name}</td>
                                 <td>${user.email}</td>
                                 <td>${user.role}</td>
-                            </tr>user
-                        `;
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit-user" 
+                                        data-id="${user.id}" 
+                                        data-name="${user.name}" 
+                                        data-email="${user.email}" 
+                                        data-role="${user.role}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete-user" 
+                                        data-id="${user.id}">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>`;
                     });
                     $('.table tbody').html(tableBody);
                 },
                 error: function (error) {
                     console.error('Error fetching users:', error);
+                    alert('Failed to load users.');
                 }
             });
         }
+
+        // Open Edit Modal
+        $(document).on('click', '.edit-user', function () {
+            let userId = $(this).data('id');
+            let userName = $(this).data('name');
+            let userEmail = $(this).data('email');
+            let userRole = $(this).data('role');
+
+            $('#editUserId').val(userId);
+            $('#editUserName').val(userName);
+            $('#editUserEmail').val(userEmail);
+            $('#editUserRole').val(userRole);
+
+            $('#editUserModal').modal('show');
+        });
+
+        // Submit Form (Update User)
+        $('#editUserForm').submit(function (event) {
+            event.preventDefault();
+
+            let userId = $('#editUserId').val();
+            let updatedData = {
+                name: $('#editUserName').val(),
+                email: $('#editUserEmail').val(),
+                role: $('#editUserRole').val()
+            };
+
+            $.ajax({
+                url: `http://localhost:8000/api/users/${userId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('User updated successfully!');
+                    $('#editUserModal').modal('hide');
+                    setTimeout(() => fetchUsers(), 500); // 🔄 Delay refresh to update ID properly
+                },
+                error: function (xhr) {
+                    console.error('Error updating user:', xhr.responseText);
+                    alert('Failed to update user.');
+                }
+            });
+        });
+
+        // Delete User
+        $(document).on('click', '.delete-user', function () {
+            let token = localStorage.getItem('token'); 
+            let userId = $(this).data('id');
+
+            if (confirm('Are you sure you want to delete this user?')) {
+                $.ajax({
+                    url: `http://localhost:8000/api/users/${userId}`,
+                    method: 'DELETE',
+                    cache: false,
+                    headers: { "Authorization": `Bearer ${token}` ,
+                                "Accept" : 'application/json'
+
+                    },
+                    success: function () {
+                        alert('User deleted successfully!');
+                        setTimeout(() => fetchUsers(), 500); // 🔄 Small delay for UI consistency
+                    },
+                    error: function (xhr) {
+                        console.error('Error deleting user:', xhr.responseText);
+                        alert('Failed to delete user.');
+                    }
+                });
+            }
+        });
     });
 </script>
+
+
+
 </html>
