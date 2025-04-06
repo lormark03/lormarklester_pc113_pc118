@@ -62,7 +62,6 @@
             transition: all 0.3s;
         }
 
-        /* Sidebar toggle button */
         .sidebar-toggle {
             display: none;
             position: absolute;
@@ -77,7 +76,6 @@
             z-index: 10;
         }
 
-        /* Responsive sidebar */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -109,14 +107,8 @@
     <div class="dropdown">
     <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-between" data-bs-toggle="collapse" data-bs-target="#userDropdown" style="padding: 12px 20px;">
     <div class="d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-        </svg>
-        <span>Users</span>
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+        <span>User List</span>
     </div>
     <i class="fas fa-chevron-down"></i> 
 </a>
@@ -175,6 +167,8 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    
                 </form>
             </div>
         </div>
@@ -189,13 +183,11 @@
     $(document).ready(function () {
         fetchUsers();
 
-
+        // Fetch users
         function fetchUsers() {
             $.ajax({
                 url: 'http://localhost:8000/api/users',
                 method: 'GET',
-                cache: false, // Prevents caching issues
-                headers: { "Cache-Control": "no-cache" },
                 dataType: 'json',
                 success: function (data) {
                     let tableBody = '';
@@ -242,7 +234,9 @@
             $('#editUserEmail').val(userEmail);
             $('#editUserRole').val(userRole);
 
-            $('#editUserModal').modal('show');
+            // Use Bootstrap 5 modal to show it
+            var myModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            myModal.show();
         });
 
         // Submit Form (Update User)
@@ -264,8 +258,9 @@
                 data: JSON.stringify(updatedData),
                 success: function (response) {
                     alert('User updated successfully!');
-                    $('#editUserModal').modal('hide');
-                    setTimeout(() => fetchUsers(), 500); // 🔄 Delay refresh to update ID properly
+                    var myModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+                    myModal.hide();
+                    setTimeout(() => fetchUsers(), 500);
                 },
                 error: function (xhr) {
                     console.error('Error updating user:', xhr.responseText);
@@ -284,13 +279,10 @@
                     url: `http://localhost:8000/api/users/${userId}`,
                     method: 'DELETE',
                     cache: false,
-                    headers: { "Authorization": `Bearer ${token}` ,
-                                "Accept" : 'application/json'
-
-                    },
+                    headers: { "Authorization": `Bearer ${token}` },
                     success: function () {
                         alert('User deleted successfully!');
-                        setTimeout(() => fetchUsers(), 500); // 🔄 Small delay for UI consistency
+                        setTimeout(() => fetchUsers(), 500); 
                     },
                     error: function (xhr) {
                         console.error('Error deleting user:', xhr.responseText);

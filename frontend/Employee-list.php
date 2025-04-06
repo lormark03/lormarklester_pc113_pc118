@@ -100,66 +100,105 @@
 </head>
 <body>
 
-<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+ <!-- Sidebar -->
+ <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar" id="sidebar">
     <div class="logo">📊 Dashboard</div>
     <a href="dashboard.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg><i class="fas fa-home"></i> Home</a>
 
-
     <div class="dropdown">
     <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-between" data-bs-toggle="collapse" data-bs-target="#userDropdown" style="padding: 12px 20px;">
     <div class="d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-        </svg>
-        <span>Users</span>
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-briefcase-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9z" /><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" /></svg>
+        <span>Employee List</span>
     </div>
     <i class="fas fa-chevron-down"></i> 
 </a>
+
         <div class="collapse" id="userDropdown">
-        <a href="User-List.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg> User List</a>
-            <a href="Students-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg> Student List</a>
+            <a href="User-List.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>  User List</a>
+            <a href="Students-list.php" class="dropdown-item"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>   Student List</a>
         </div>
     </div>
 
     <a href="logout.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <div class="content">
-        <h2>List of Employee</h2>
+<div class="content">
+    <h2>Employees List</h2>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+        + Add Employee
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Address</th>
+                <th>Age</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-        <table class="table">
-  <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Firstname</th>
-        <th scope="col">Lastname</th>
-        <th scope="col">Address</th>
-        <th scope="col">Age</th>
-        <th scope="col">Email Address</th> 
-        <th scope="col">Phone</th>
-        <th scope="col">Action</th>
-    </tr>
-  </thead>
-    <tbody>
-    </tbody>
-</table>
+<!-- Edit Employee Modal -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="editEmployeeForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editEmployeeId">
+          <div class="mb-3">
+            <label for="editFirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="editFirstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="editLastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="editLastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="editAddress" class="form-label">Address</label>
+            <input type="text" class="form-control" id="editAddress" required>
+          </div>
+          <div class="mb-3">
+            <label for="editAge" class="form-label">Age</label>
+            <input type="number" class="form-control" id="editAge" required>
+          </div>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="editPhone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="editPhone" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-</body>
-<script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
         fetchEmployees();
 
         function fetchEmployees() {
             $.ajax({
-                url: 'http://localhost:8000/api/employees', // Update with your API URL
+                url: 'http://localhost:8000/api/employees',
                 method: 'GET',
                 success: function (data) {
                     let tableBody = '';
@@ -173,16 +212,93 @@
                                 <td>${employee.age}</td>
                                 <td>${employee.email_address}</td>
                                 <td>${employee.phone_number}</td>
-                            </tr>
-                        `;
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit-employee"
+                                        data-id="${employee.id}"
+                                        data-firstname="${employee.first_name}"
+                                        data-lastname="${employee.last_name}"
+                                        data-address="${employee.address}"
+                                        data-age="${employee.age}"
+                                        data-email="${employee.email_address}"
+                                        data-phone="${employee.phone_number}">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete-employee" data-id="${employee.id}">Delete</button>
+                                </td>
+                            </tr>`;
                     });
                     $('.table tbody').html(tableBody);
                 },
                 error: function (error) {
-                    console.error('Error fetching employee:', error);
+                    console.error('Error fetching employees:', error);
                 }
             });
         }
+
+        // Show edit modal
+        $(document).on('click', '.edit-employee', function () {
+            $('#editEmployeeId').val($(this).data('id'));
+            $('#editFirstName').val($(this).data('firstname'));
+            $('#editLastName').val($(this).data('lastname'));
+            $('#editAddress').val($(this).data('address'));
+            $('#editAge').val($(this).data('age'));
+            $('#editEmail').val($(this).data('email'));
+            $('#editPhone').val($(this).data('phone'));
+
+            const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
+            modal.show();
+        });
+
+        // Update employee
+        $('#editEmployeeForm').submit(function (event) {
+            event.preventDefault();
+            const employeeId = $('#editEmployeeId').val();
+            const updatedData = {
+                first_name: $('#editFirstName').val(),
+                last_name: $('#editLastName').val(),
+                address: $('#editAddress').val(),
+                age: $('#editAge').val(),
+                email_address: $('#editEmail').val(),
+                phone_number: $('#editPhone').val()
+            };
+
+            $.ajax({
+                url: `http://localhost:8000/api/employees/${employeeId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function () {
+                    alert('Employee updated successfully!');
+                    const modalEl = document.getElementById('editEmployeeModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                    modalInstance.hide();
+                    fetchEmployees();
+                },
+                error: function (error) {
+                    console.error('Error updating employee:', error);
+                }
+            });
+        });
+
+        // Delete employee
+        $(document).on('click', '.delete-employee', function () {
+            const employeeId = $(this).data('id');
+            if (confirm('Are you sure you want to delete this employee?')) {
+                $.ajax({
+                    url: `http://localhost:8000/api/employees/${employeeId}`,
+                    method: 'DELETE',
+                    success: function () {
+                        alert('Employee deleted successfully!');
+                        fetchEmployees();
+                    },
+                    error: function (error) {
+                        console.error('Error deleting employee:', error);
+                    }
+                });
+            }
+        });
     });
 </script>
+
+</body>
 </html>
