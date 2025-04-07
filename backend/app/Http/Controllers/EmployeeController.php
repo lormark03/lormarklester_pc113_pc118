@@ -92,7 +92,6 @@ public function update(Request $request, $id)
             'message' => 'Employee deleted']);
     }
 
-   
     
     
 }
