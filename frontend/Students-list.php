@@ -165,6 +165,10 @@
             <label for="addPhone" class="form-label">Phone</label>
             <input type="text" class="form-control" id="addPhone" required>
           </div>
+          <div class="mb-3">
+            <label for="addEmergencyContact" class="form-label">Emergency Contact</label>
+            <input type="text" class="form-control" id="addEmergencyContact" required>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -281,7 +285,7 @@
         age: $('#addAge').val(),
         email_address: $('#addEmail').val(),
         phone_number: $('#addPhone').val(),
-        emergency_contact: $('#addEmergencyContact').val() || null  // Set as null if empty
+        emergency_contact: $('#addEmergencyContact').val() || null  
     };
 
     $.ajax({
