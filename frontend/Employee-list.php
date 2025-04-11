@@ -147,6 +147,54 @@
     </table>
 </div>
 
+<!-- Add Student Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="addEmployeeForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="addFirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="addFirstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="addLastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="addLastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="addAddress" class="form-label">Address</label>
+            <input type="text" class="form-control" id="addAddress" required>
+          </div>
+          <div class="mb-3">
+            <label for="addAge" class="form-label">Age</label>
+            <input type="number" class="form-control" id="addAge" required>
+          </div>
+          <div class="mb-3">
+            <label for="addEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="addEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="addPhone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="addPhone" required>
+          </div>
+          <div class="mb-3">
+            <label for="addEmergencyContact" class="form-label">Emergency Contact</label>
+            <input type="text" class="form-control" id="addEmergencyContact" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Edit Employee Modal -->
 <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -248,6 +296,41 @@
             const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
             modal.show();
         });
+
+
+         // Add new student
+         $('#addEmployeeForm').submit(function (event) {
+    event.preventDefault();
+
+    const newEmployee = {
+        first_name: $('#addFirstName').val(),
+        last_name: $('#addLastName').val(),
+        address: $('#addAddress').val(),
+        age: $('#addAge').val(),
+        email_address: $('#addEmail').val(),
+        phone_number: $('#addPhone').val(),
+        emergency_contact: $('#addEmergencyContact').val() || null  
+    };
+
+    $.ajax({
+        url: 'http://localhost:8000/api/employees',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(newEmployee),
+        success: function () {
+            alert('Employee added successfully!');
+            const modalEl = document.getElementById('addEmployeeModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            modalInstance.hide();
+            $('#addEmployeeForm')[0].reset();
+            fetchEmployees();
+        },
+        error: function (error) {
+            console.error('Error adding employee:', error);
+        }
+    });
+});
+
 
         // Update employee
         $('#editEmployeeForm').submit(function (event) {

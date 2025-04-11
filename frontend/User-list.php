@@ -125,6 +125,9 @@
 
     <div class="content">
         <h2>User List</h2>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addUserModal">
+        + Add User
+    </button>
 
         <table class="table">
   <thead>
@@ -140,6 +143,40 @@
       
     </tbody>
 </table>
+
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="addUserForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="addName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="addName" required>
+          </div>
+          <div class="mb-3">
+            <label for="addEmail" class="form-label">Email</label>
+            <input type="text" class="form-control" id="addEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="addPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="addPassword" required>
+          </div>
+          <div class="mb-3">
+            <label for="addRole" class="form-label">Role</label>
+            <input type="text" class="form-control" id="addRole" required>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -221,6 +258,39 @@
                 }
             });
         }
+
+    // Add User Form Submission
+    $('#addUserForm').submit(function (event) {
+        event.preventDefault();
+
+        const newUser = {
+            name: $('#addName').val(),
+            email: $('#addEmail').val(),
+            password: $('#addPassword').val(),
+            role: $('#addRole').val()
+        };
+
+        $.ajax({
+            url: 'http://localhost:8000/api/users',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(newUser),
+            success: function (response) {
+                alert('User added successfully!');
+                $('#addUserForm')[0].reset();
+                var addModal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                addModal.hide();
+                setTimeout(() => fetchUsers(), 500);
+            },
+            error: function (xhr) {
+                console.error('Error adding user:', xhr.responseText);
+                alert('Failed to add user.');
+            }
+        });
+    });
+
+
 
         // Open Edit Modal
         $(document).on('click', '.edit-user', function () {
