@@ -1,10 +1,23 @@
+<?php
+session_start();
+
+// Optional: check if user is not logged in
+if (!isset($_SESSION['name']) || !isset($_SESSION['role'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +71,6 @@
             transition: all 0.3s;
         }
 
-
         .sidebar-toggle {
             display: none;
             position: absolute;
@@ -95,12 +107,12 @@
 </head>
 <body>
 
+  
     <!-- Sidebar -->
     <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar" id="sidebar">
     <div class="logo">📊 Dashboard</div>
     <a href="dashboard.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg><i class="fas fa-home"></i> Home</a>
-
     <div class="dropdown">
     <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-between" data-bs-toggle="collapse" data-bs-target="#userDropdown" style="padding: 12px 20px;">
     <div class="d-flex align-items-center">
@@ -126,18 +138,47 @@
     <a href="logout.php"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
 
+    <!-- Main content -->
     <div class="content">
-        <h2>Welcome to the Dashboard</h2>
-        <p id="name"></p>
-        <p id="role"></p>
-        <p id=""></p>
-</html>
+        <h2>Welcome to the Dashboard </h2>
+         <p id="username"></p>
+    </div>
 
-
+    <!-- Scripts -->
 <script>
-    if (localStorage.getItem('token')){
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const name = localStorage.getItem('name');
+        const role = localStorage.getItem('role');
         const token = localStorage.getItem('token');
-        }else{
-            console.log('way token!');
+
+        // Redirect if no token (optional)
+        if (!token) {
+            console.log('No token found! Redirecting to login...');
+            window.location.href = 'login.php';
+            return;
         }
+
+        // Show username
+    if (name) {
+        document.getElementById('username').textContent = `Hi, ${name}!`;
+    }
+
+
+        // Hide Users dropdown for non-admins
+        if (role !== 'admin') {
+            const userDropdown = document.querySelector('.dropdown');
+            if (userDropdown) {
+                userDropdown.style.display = 'none';
+            }
+        }
+    });
 </script>
+
+
+</body>
+</html>
