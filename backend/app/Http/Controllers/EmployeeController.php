@@ -33,50 +33,92 @@ class EmployeeController extends Controller
         return response()->json($employees);
     }
 
-    public function store(Request $request)
+ public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'first_name' => 'required|string',
-        'last_name' => 'required|string',
-        'address' => 'required|string',
-        'age' => 'required|integer', 
-        'email_address' => 'required|email|unique:employees,email_address',
-        'phone_number' => 'required|string',
-    ]);
+    try {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'address' => 'required|string',
+            'age' => 'required|integer',
+            'email_address' => 'required|email|unique:employees,email_address',
+            'phone_number' => 'required|string',
+            'emergency_contact' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpg,png,svg,jpeg|max:2048',
+        ]);
 
-    $employee = Employee::create($validatedData);
+        $imgPath = null;
+        if ($request->hasFile('photo')) {
+            $imgPath = $request->file('photo')->store('employee_photos', 'public');
+        }
 
-    return response()->json([
-        'message' => 'Employee created successfully',
-        'employee' => $employee,
-    ], 201);
+        $employee = Employee::create([
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'address' => $validatedData['address'],
+            'age' => $validatedData['age'],
+            'email_address' => $validatedData['email_address'],
+            'phone_number' => $validatedData['phone_number'],
+            'emergency_contact' => $validatedData['emergency_contact'] ?? null,
+            'photo' => $imgPath,
+        ]);
+
+        $employee->photo = $employee->photo ? asset('storage/' . $employee->photo) : null;
+
+        return response()->json([
+            'message' => 'Employee created successfully',
+            'employee' => $employee,
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => "Error",
+            'error' => $e->getMessage(),
+        ], 500);
+    }
 }
-
 
 public function update(Request $request, $id)
 {
-    $employee = Employee::find($id);
+    try {
+        $employee = Employee::find($id);
 
-    if (!$employee) {
-        return response()->json(['message' => 'Employee not found'], 404);
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
+            'email_address' => 'sometimes|email|unique:employees,email_address,' . $id,
+            'address' => 'sometimes|string',
+            'age' => 'sometimes|integer',
+            'phone_number' => 'sometimes|string',
+            'emergency_contact' => 'sometimes|string|nullable',
+            'photo' => 'nullable|image|mimes:jpg,png,svg,jpeg|max:2048',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('employee_photos', 'public');
+            $validatedData['photo'] = $photoPath;
+        }
+
+        $employee->update($validatedData);
+
+        $employee->photo = $employee->photo ? asset('storage/' . $employee->photo) : null;
+
+        return response()->json([
+            'message' => 'Employee updated successfully',
+            'employee' => $employee,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Update failed',
+            'error' => $e->getMessage(),
+        ], 500);
     }
-
-    $validatedData = $request->validate([
-        'first_name' => 'sometimes|string',
-        'last_name' => 'sometimes|string',
-        'email_address' => 'sometimes|email|unique:employees,email_address,' . $id,
-        'address' => 'sometimes|string',
-        'age' => 'sometimes|integer',
-        'phone_number' => 'sometimes|string',
-    ]);
-
-    $employee->update($validatedData);
-
-    return response()->json([
-        'employee' => $employee,
-    ], 200);
 }
-
 
     public function destroy($id)
     {

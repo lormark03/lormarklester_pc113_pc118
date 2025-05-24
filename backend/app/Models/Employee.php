@@ -15,6 +15,7 @@ class Employee extends Model
     'age',
     'email_address',
     'phone_number',
+    'photo',
 ];
 
 }

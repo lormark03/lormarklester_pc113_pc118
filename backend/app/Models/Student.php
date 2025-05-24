@@ -15,6 +15,7 @@ class Student extends Model
         'age',
         'email_address',
         'phone_number',
-       'emergency_contact'
+       'emergency_contact',
+        'photo',
     ];
 }

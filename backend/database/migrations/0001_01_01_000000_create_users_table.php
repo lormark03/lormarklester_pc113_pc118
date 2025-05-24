@@ -16,10 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('api_token', 64)->unique()->nullable();
-            $table->string('role')->default('user');
+
+            $table->enum('role' , ['admin', 'user'])->default('user');  // Default role is 'user'
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

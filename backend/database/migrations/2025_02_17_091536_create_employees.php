@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('age');
             $table->string('email_address')->unique();
             $table->string('phone_number');
+             $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

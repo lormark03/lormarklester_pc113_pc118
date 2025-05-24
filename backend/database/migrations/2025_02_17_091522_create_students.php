@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email_address')->unique();
             $table->string('phone_number');
             $table->string('emergency_contact');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

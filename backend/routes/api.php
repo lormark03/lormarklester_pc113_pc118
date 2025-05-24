@@ -24,8 +24,8 @@ Route::get('/students', [StudentController::class, 'index']);
 Route::post('/employees', [EmployeeController::class, 'store']);
 Route::post('/students', [StudentController::class, 'store']);
 
-Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-Route::put('/students/{id}', [StudentController::class, 'update']);
+Route::post('/employees/{id}', [EmployeeController::class, 'update']);
+Route::post('/students/{id}', [StudentController::class, 'update']);
 
 Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
 Route::delete('/students/{id}', [StudentController::class, 'destroy']);
@@ -34,11 +34,14 @@ Route::get('/employees/search', [EmployeeController::class, 'search']);
 Route::get('/students/search', [StudentController::class, 'search']);
 
 Route::get('/users', [UserController::class, 'index']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
+
+//image upload
+Route::post('/register', [UserController::class, 'store']);
 
 
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::post('/users/{id}', [UserController::class, 'update']);
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{id}', [UserController::class, 'show']);
 
@@ -54,3 +57,5 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function(){
     Route::get('/user', [UserController::class, 'index']);
     
 });
+
+Route::post('upload-image', [UserController::class, 'uploadImage']);

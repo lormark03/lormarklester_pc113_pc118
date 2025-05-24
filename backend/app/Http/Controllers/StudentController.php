@@ -30,50 +30,95 @@ class StudentController extends Controller
         return response()->json($students);
     }
 
-    public function store(Request $request)
-    {
+   public function store(Request $request)
+{
+    try {
         $validatedData = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'address' => 'required|string',     
-            'age' => 'required|integer', 
-            'email_address' => 'required|email|unique:employees,email_address',
+            'address' => 'required|string',
+            'age' => 'required|integer',
+            'email_address' => 'required|email|unique:students,email_address',
             'phone_number' => 'required|string',
             'emergency_contact' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpg,png,svg,jpeg|max:2048', // max 2MB
         ]);
-    
-        $student = student::create($validatedData);
-    
+
+        $imgPath = null;
+        if ($request->hasFile('photo')) {
+            $imgPath = $request->file('photo')->store('student_photos', 'public');
+        }
+
+        $student = Student::create([
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'address' => $validatedData['address'],
+            'age' => $validatedData['age'],
+            'email_address' => $validatedData['email_address'],
+            'phone_number' => $validatedData['phone_number'],
+            'emergency_contact' => $validatedData['emergency_contact'] ?? null,
+            'photo' => $imgPath,
+        ]);
+
+        $student->photo = $student->photo ? asset('storage/' . $student->photo) : null;
+
         return response()->json([
-            'message' => 'student created successfully',
+            'message' => 'Student created successfully',
             'student' => $student,
         ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => "Error",
+            'error' => $e->getMessage(),
+        ], 500);
     }
-
-    public function update(Request $request, $id)
-{
-    $student = student::find($id);
-
-    if (!$student) {
-        return response()->json(['message' => 'student not found'], 404);
-    }
-
-    $validatedData = $request->validate([
-        'first_name' => 'sometimes|string',
-        'last_name' => 'sometimes|string',
-        'email_address' => 'sometimes|email|unique:employees,email_address,' . $id,
-        'address' => 'sometimes|string',
-        'age' => 'sometimes|integer',
-        'phone_number' => 'sometimes|string',
-        'emergency_contact' => 'sometimes|string',
-    ]);
-
-    $student->update($validatedData);
-
-    return response()->json([
-        'student' => $student,
-    ], 200);
 }
+
+   public function update(Request $request, $id)
+{
+    try {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
+            'email_address' => 'sometimes|email|unique:students,email_address,' . $id,
+            'address' => 'sometimes|string',
+            'age' => 'sometimes|integer',
+            'phone_number' => 'sometimes|string',
+            'emergency_contact' => 'sometimes|string|nullable',
+            'photo' => 'nullable|image|mimes:jpg,png,svg,jpeg|max:2048',
+        ]);
+
+        // Handle photo upload if provided
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('student_photos', 'public');
+            $validatedData['photo'] = $photoPath;
+        }
+
+        $student->update($validatedData);
+
+        // Format photo URL if exists
+        $student->photo = $student->photo ? asset('storage/' . $student->photo) : null;
+
+        return response()->json([
+            'message' => 'Student updated successfully',
+            'student' => $student,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Update failed',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 
 public function destroy($id)
 {
