@@ -2,4 +2,6 @@
     <br>
     Your Account has been created successfully!
     </br>
+    
 @endcomponent
+
