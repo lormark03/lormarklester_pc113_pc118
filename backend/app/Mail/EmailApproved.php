@@ -41,11 +41,11 @@ class EmailApproved extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'email',
+            markdown: 'mail',
             with: [
                 'id' => $this->id,
                 'name' => $this->name,
-            ],
+            ]
         );
     }
 

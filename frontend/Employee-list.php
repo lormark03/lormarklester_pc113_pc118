@@ -261,28 +261,30 @@ $userRole = $_SESSION['role'];
     }
 
     $('#addEmployeeForm').submit(function (e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      $.ajax({
-        url: 'http://localhost:8000/api/employees',
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success(response) {
-          Swal.fire('Success', response.message, 'success');
-          $('#addEmployeeModal').modal('hide');
-          $('#addEmployeeForm')[0].reset();
-          $('.dropify').dropify();
-          fetchEmployees();
-        },
-        error(xhr) {
-          const errors = xhr.responseJSON.errors || {};
-          const errorList = Object.values(errors).flat().map(msg => `<li>${msg}</li>`).join('');
-          Swal.fire('Error', `<ul>${errorList}</ul>`, 'error');
-        }
-      });
-    });
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  $.ajax({
+    url: 'http://localhost:8000/api/employees',
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success(response) {
+      Swal.fire('Success', response.message, 'success');
+      $('#addEmployeeModal').modal('hide');
+      $('#addEmployeeForm')[0].reset();
+      $('.dropify').dropify(); // Reinitialize Dropify after reset
+      fetchEmployees(); // Make sure you have this function defined
+    },
+    error(xhr) {
+      const errors = xhr.responseJSON?.errors || {};
+      const errorList = Object.values(errors).flat().map(msg => `<li>${msg}</li>`).join('');
+      Swal.fire('Error', `<ul>${errorList}</ul>`, 'error');
+    }
+  });
+});
+
 
     $(document).on('click', '.edit-employee', function () {
       $('#editEmployeeId').val($(this).data('id'));

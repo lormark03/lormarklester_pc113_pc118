@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register</title>
+  <title>User Registration</title>
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
   <style>
     html, body {
       height: 100%;
@@ -39,7 +47,6 @@
           <input type="file" name="photo" id="photo" class="form-control" accept=".jpg,.jpeg,.png,.svg" />
         </div>
 
-        <!-- Hidden field for role if it's required -->
         <input type="hidden" name="role" value="user" />
 
         <div class="d-grid">
@@ -54,19 +61,37 @@
   $(document).ready(function () {
     $('#registerForm').on('submit', function (e) {
       e.preventDefault();
+
       const formData = new FormData(this);
 
       $.ajax({
-        url: 'http://localhost:8000/api/register', // Laravel endpoint
-        type: 'POST',
+        url: 'http://localhost:8000/api/register',
+        method: 'POST',
         data: formData,
         processData: false,
         contentType: false,
-        success: function () {
-          window.location.href = 'login.php';
+        success: function (response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful',
+            text: 'Redirecting to login page...',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(() => {
+            window.location.href = 'login.php';
+          });
         },
-        error: function () {
-          console.log('Registration failed. Check backend for details.');
+        error: function (xhr) {
+          const errors = xhr.responseJSON?.errors || {};
+          const errorList = Object.values(errors).flat().map(msg => `<li>${msg}</li>`).join('');
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            html: errorList ? `<ul>${errorList}</ul>` : 'Something went wrong. Please try again.'
+          });
+
+          console.error('Registration error:', xhr.responseText);
         }
       });
     });

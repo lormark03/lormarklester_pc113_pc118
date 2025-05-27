@@ -261,28 +261,30 @@ $userRole = $_SESSION['role'];
     }
 
     $('#addStudentForm').submit(function (e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      $.ajax({
-        url: 'http://localhost:8000/api/students',
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success(response) {
-          Swal.fire('Success', response.message, 'success');
-          $('#addStudentModal').modal('hide');
-          $('#addStudentForm')[0].reset();
-          $('.dropify').dropify(); // reinitialize after reset
-          fetchStudents();
-        },
-        error(xhr) {
-          const errors = xhr.responseJSON.errors || {};
-          const errorList = Object.values(errors).flat().map(msg => `<li>${msg}</li>`).join('');
-          Swal.fire('Error', `<ul>${errorList}</ul>`, 'error');
-        }
-      });
-    });
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  $.ajax({
+    url: 'http://localhost:8000/api/students',
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success(response) {
+      Swal.fire('Success', response.message, 'success');
+      $('#addStudentModal').modal('hide');
+      $('#addStudentForm')[0].reset();
+      $('.dropify').dropify(); // Reinitialize Dropify after reset
+      fetchStudents();
+    },
+    error(xhr) {
+      const errors = xhr.responseJSON?.errors || {};
+      const errorList = Object.values(errors).flat().map(msg => `<li>${msg}</li>`).join('');
+      Swal.fire('Error', `<ul>${errorList}</ul>`, 'error');
+    }
+  });
+});
+
 
  $(document).on('click', '.edit-student', function () {
   $('#editStudentId').val($(this).data('id'));

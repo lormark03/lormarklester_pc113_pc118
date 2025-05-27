@@ -302,14 +302,16 @@ $userRole = $_SESSION['role'];
         }
       });
     });
-// ===== Fill Edit Form =====
+
+    
 $(document).on('click', '.edit-user', function () {
   $('#editUserId').val($(this).data('id'));
   $('#editUserName').val($(this).data('name'));
   $('#editUserEmail').val($(this).data('email'));
   $('#editUserRole').val($(this).data('role'));
 
-  // Optional: Reset dropify
+  
+  
   const dropify = $('#editUserPhoto').dropify();
   dropify.data('dropify').resetPreview();
   dropify.data('dropify').clearElement();
@@ -317,7 +319,8 @@ $(document).on('click', '.edit-user', function () {
   $('#editUserModal').modal('show');
 });
 
-// ===== Edit User Form with PUT Method Override =====
+
+
 $('#editUserForm').submit(function (e) {
   e.preventDefault();
   const id = $('#editUserId').val();
